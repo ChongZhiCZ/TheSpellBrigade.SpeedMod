@@ -19,7 +19,9 @@ A BepInEx mod for **The Spell Brigade** that allows you to control game speed dy
 
 #### Prerequisites
 - **BepInEx 6** (IL2CPP version) must be installed
-- Download from: [BepInEx Releases](https://github.com/BepInEx/BepInEx/releases)
+- Download from: [BepInEx Bleeding Edge Builds](https://builds.bepinex.dev/projects/bepinex_be)
+  - Select **BepInEx Unity (IL2CPP) for Windows x64**
+  - Note: BepInEx 6 IL2CPP is currently in bleeding edge stage (no stable release yet)
 
 #### Steps
 1. Download `SpellBrigadeSpeedMod.dll` from [Releases](https://github.com/ChongZhiCZ/TheSpellBrigade.SpeedMod/releases)
@@ -73,7 +75,9 @@ The current game speed is displayed in the **top-right corner** of the screen (e
 
 #### 前置要求
 - 必须安装 **BepInEx 6**（IL2CPP 版本）
-- 下载地址：[BepInEx Releases](https://github.com/BepInEx/BepInEx/releases)
+- 下载地址：[BepInEx Bleeding Edge 构建](https://builds.bepinex.dev/projects/bepinex_be)
+  - 选择 **BepInEx Unity (IL2CPP) for Windows x64**
+  - 注意：BepInEx 6 IL2CPP 目前处于 bleeding edge 阶段（尚无正式稳定版）
 
 #### 安装步骤
 1. 从 [Releases](https://github.com/ChongZhiCZ/TheSpellBrigade.SpeedMod/releases) 下载 `SpellBrigadeSpeedMod.dll`
