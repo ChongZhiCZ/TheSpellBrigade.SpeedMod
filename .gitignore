@@ -1,1 +1,28 @@
 .worktrees/
+
+# Build outputs
+bin/
+obj/
+*.dll
+*.pdb
+*.exe
+
+# .NET
+*.user
+*.suo
+*.cache
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio
+.vs/
+*.userprefs
+
+# Rider
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
