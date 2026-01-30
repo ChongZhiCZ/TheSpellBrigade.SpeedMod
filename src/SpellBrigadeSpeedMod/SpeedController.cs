@@ -11,6 +11,8 @@ namespace SpellBrigadeSpeedMod
         public override void Load()
         {
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            Log.LogInfo("本mod免费开源 | This mod is free and open source");
+            Log.LogInfo("GitHub: https://github.com/ChongZhiCZ/TheSpellBrigade.SpeedMod");
 
             // Use BasePlugin.AddComponent to properly register and add the MonoBehaviour
             // This ensures Update() will be called by Unity's message system
