@@ -7,18 +7,18 @@ namespace SpellBrigadeSpeedMod
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class SpeedController : BasePlugin
     {
-        private float currentSpeed = 1.0f;
-        private const float MIN_SPEED = 1.0f;
-        private const float MAX_SPEED = 10.0f;
-        private const float SPEED_INCREMENT = 0.5f;
-
         public override void Load()
         {
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
-            Log.LogInfo($"Speed control initialized. Current speed: {currentSpeed}x");
+            Log.LogInfo($"Speed control initialized. Current speed: 1.0x");
 
-            // Register Update callback
-            AddComponent<SpeedControllerBehaviour>();
+            // Create persistent GameObject with both components
+            var go = new GameObject("SpeedModController");
+            GameObject.DontDestroyOnLoad(go);
+            go.AddComponent<SpeedControllerBehaviour>();
+            go.AddComponent<SpeedDisplay>();
+
+            Log.LogInfo("Speed display UI initialized");
         }
     }
 
