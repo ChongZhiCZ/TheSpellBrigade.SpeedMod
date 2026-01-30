@@ -1,5 +1,6 @@
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
+using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
 
 namespace SpellBrigadeSpeedMod
@@ -10,15 +11,13 @@ namespace SpellBrigadeSpeedMod
         public override void Load()
         {
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
-            Log.LogInfo($"Speed control initialized. Current speed: 1.0x");
 
-            // Create persistent GameObject with both components
-            var go = new GameObject("SpeedModController");
-            GameObject.DontDestroyOnLoad(go);
-            go.AddComponent<SpeedControllerBehaviour>();
-            go.AddComponent<SpeedDisplay>();
+            // Use BasePlugin.AddComponent to properly register and add the MonoBehaviour
+            // This ensures Update() will be called by Unity's message system
+            AddComponent<SpeedControllerBehaviour>();
+            AddComponent<SpeedDisplay>();
 
-            Log.LogInfo("Speed display UI initialized");
+            Log.LogInfo("Speed control initialized. Use Numpad+/- or =/- to change speed, R or Backspace to reset");
         }
     }
 
@@ -28,17 +27,38 @@ namespace SpellBrigadeSpeedMod
         private const float MIN_SPEED = 1.0f;
         private const float MAX_SPEED = 10.0f;
         private const float SPEED_INCREMENT = 0.5f;
+        private bool wasPaused = false;
 
         public SpeedControllerBehaviour(System.IntPtr ptr) : base(ptr) { }
 
         private void Awake()
         {
-            DontDestroyOnLoad(gameObject);
-            SetSpeed(1.0f); // Ensure we start at normal speed
+            Debug.Log("[SpeedMod] SpeedControllerBehaviour Awake called");
+            SetSpeed(1.0f);
         }
 
         private void Update()
         {
+            // Detect if game was paused (Time.timeScale == 0) and is now resuming
+            bool isPaused = Time.timeScale == 0f;
+
+            if (wasPaused && !isPaused)
+            {
+                // Game just resumed from pause, reapply our speed
+                Time.timeScale = currentSpeed;
+                Debug.Log($"[SpeedMod] Game resumed, reapplied speed: {currentSpeed:F1}x");
+            }
+
+            // Detect if Time.timeScale was changed by game (not 0 and not our speed)
+            // Allow small tolerance for floating point comparison
+            if (!isPaused && Mathf.Abs(Time.timeScale - currentSpeed) > 0.01f)
+            {
+                Debug.Log($"[SpeedMod] Time.timeScale changed externally from {Time.timeScale:F1} to {currentSpeed:F1}, reapplying");
+                Time.timeScale = currentSpeed;
+            }
+
+            wasPaused = isPaused;
+
             // Increase speed: Numpad+ or =
             if (Input.GetKeyDown(KeyCode.KeypadPlus) || Input.GetKeyDown(KeyCode.Equals))
             {
@@ -79,7 +99,7 @@ namespace SpellBrigadeSpeedMod
         {
             currentSpeed = speed;
             Time.timeScale = currentSpeed;
-            Debug.Log($"Speed changed to: {currentSpeed}x");
+            Debug.Log($"[SpeedMod] Speed changed to: {currentSpeed:F1}x");
         }
     }
 }
